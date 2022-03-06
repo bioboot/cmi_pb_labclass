@@ -1,0 +1,674 @@
+---
+title: "Mini-Project"
+subtitle: 'Investigating Pertussis Resurgence'
+output: 
+    labsheet::labsheet_default:
+        keep_md: true
+        theme: cosmo
+        highlight: pygments
+        toc: true
+        toc_float: true
+        toc_depth: 2
+        number_sections: false
+        code_folding: show
+        df_print: paged
+---
+
+<!-- Standard knitr setup with labsheet package loading -->
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+if (!requireNamespace("labsheet")) {
+  stop("You must install the 'labsheet' package to use this template.\n   devtools::install_github(\"bioboot/labsheet\")")
+} else {
+  library("labsheet")
+}
+
+library(tidyverse)
+
+```
+
+<!-- Track Correct Student Responses -->
+`r score_counter()`
+
+<!-- Author, course URL and time-stamp details -->
+`r author(course="bggn213")`
+
+
+# Background  
+
+![](vacine.png "Whole-cell pertussis vaccines are inactivated bacteria with many antigens, including endotoxins, which trigger broad immunity. The acellular vaccines use only a few antigens, including a weakened pertussis toxin, to limit side effects."){style="float: right;" width="300"}
+Pertussis (more commonly known as **whooping cough**) is reemerging worldwide despite effective vaccination programs. This highly contagious respiratory disease is caused by the bacterium *Bordetella pertussis*. People of all ages can be infected leading to violent coughing fits, vomiting and apnea (with characteristic strained breathing associated "whooping" sounds). However, pertussis is most severe and life threatening for infants. Indeed, recent estimates from the WHO suggest that approximately 16 million cases and 200,000 infant deaths are due to pertussis annually [1](https://pubmed.ncbi.nlm.nih.gov/20466419/).
+
+Pertussis vaccination is, in general, highly effective at preventing the disease. In the pre-vaccine era pertussis was a much more common disease and a major cause of infant mortality [2](https://www.cdc.gov/vaccines/pubs/surv-manual/chpt10-pertussis.html). As we will see from analysis of CDC data below, introduction of pertussis vaccination in the United States resulted in a dramatic reduction in the number of yearly cases from > 200,000 in the 1940s to < 2,000 in 1970s. **Unfortunately, in recent years we have seen a significant resurgence in pertussis cases with large outbreaks now once again a major public health concern.** 
+
+> **Key-question:** Why is this vaccine-preventable disease on the upswing?
+
+## A tale of two vaccines
+
+Two types of pertussis vaccines are currently available: **whole-cell pertussis (wP)** and **acellular pertussis (aP)**. The latter aP vaccines use purified antigens of the bacteria and were developed to have less side effects than the older wP vaccines. Currently in United States aP vaccines are administered to infants in combination with those for **d**iphtheria (D) and **t**etanus (T) in the so-called **DTaP vaccine** combo.  A distinct **Tdap** formulation, with reduced doses of diphtheria and pertussis, is administered as a boost for preteens, teens, and adults.
+
+> **Key-point:** Despite high levels of acellular pertussis (aP) vaccination, the United States and other countries are now experiencing increasing pertussis case numbers. To investigating this further let's examine the history of CDC reported case numbers along with the time points for wP and aP vaccine introduction. 
+
+
+# Investigating pertussis cases by year
+
+The CDC has been compiling reported pertussis case numbers since 1922 in their *National Notifiable Diseases Surveillance System* (NNDSS). We can view this data on the CDC website here: https://www.cdc.gov/pertussis/surv-reporting/cases-by-year.html
+
+
+```{r cdcdata, echo=FALSE}
+cdc <- data.frame(
+                          Year = c(1922L,
+                                   1923L,1924L,1925L,1926L,1927L,1928L,
+                                   1929L,1930L,1931L,1932L,1933L,1934L,1935L,
+                                   1936L,1937L,1938L,1939L,1940L,1941L,
+                                   1942L,1943L,1944L,1945L,1946L,1947L,1948L,
+                                   1949L,1950L,1951L,1952L,1953L,1954L,
+                                   1955L,1956L,1957L,1958L,1959L,1960L,
+                                   1961L,1962L,1963L,1964L,1965L,1966L,1967L,
+                                   1968L,1969L,1970L,1971L,1972L,1973L,
+                                   1974L,1975L,1976L,1977L,1978L,1979L,1980L,
+                                   1981L,1982L,1983L,1984L,1985L,1986L,
+                                   1987L,1988L,1989L,1990L,1991L,1992L,1993L,
+                                   1994L,1995L,1996L,1997L,1998L,1999L,
+                                   2000L,2001L,2002L,2003L,2004L,2005L,
+                                   2006L,2007L,2008L,2009L,2010L,2011L,2012L,
+                                   2013L,2014L,2015L,2016L,2017L,2018L,
+                                   2019L),
+  Cases = c(107473,
+                                   164191,165418,152003,202210,181411,
+                                   161799,197371,166914,172559,215343,179135,
+                                   265269,180518,147237,214652,227319,103188,
+                                   183866,222202,191383,191890,109873,
+                                   133792,109860,156517,74715,69479,120718,
+                                   68687,45030,37129,60886,62786,31732,28295,
+                                   32148,40005,14809,11468,17749,17135,
+                                   13005,6799,7717,9718,4810,3285,4249,
+                                   3036,3287,1759,2402,1738,1010,2177,2063,
+                                   1623,1730,1248,1895,2463,2276,3589,
+                                   4195,2823,3450,4157,4570,2719,4083,6586,
+                                   4617,5137,7796,6564,7405,7298,7867,
+                                   7580,9771,11647,25827,25616,15632,10454,
+                                   13278,16858,27550,18719,48277,28639,
+                                   32971,20762,17972,18975,15609,18617)
+)
+```
+
+`r question_start()`
+- **Q1.**  With the help of the R "addin" package [**datapasta**](https://milesmcbain.github.io/datapasta/) assign the CDC pertussis case number data to a data frame called `cdc` and use **ggplot** or base R to make the following plot.
+
+`r hide("Hint")`
+To help "scrape" this data from the CDC website you can install the [**datapasta package**](https://milesmcbain.github.io/datapasta/), which will appear under the RStudio "**Addins**" menu button and allow you to web-scrape by copying tables of data from any website or PDF and then in RStudio selecting *"Paste as data.frame"* from the RStudio "**Addins**" menu. 
+
+
+```{r dunnmycdcplot, eval=FALSE}
+ggplot(cdc) +
+  aes(___, ___) +
+  geom_point() +
+  geom____() +
+  labs(___)
+```
+
+`r unhide()`
+
+```{r cdcplot, echo=FALSE}
+library(ggplot2)
+
+base <- ggplot(cdc) +
+  aes(Year, Cases) +
+  geom_point() +
+  geom_line() +
+  labs(title="Pertussis Cases by Year (1922-2019)", y="Number of cases") +
+  scale_y_continuous(labels = scales::label_comma()) 
+
+print(base)
+```
+
+- **Q2.** Using the `geom_vline()` function add a line for the 1946 introduction of the wP vaccine and the 1996 switch to aP vaccine (see example below). 
+
+
+
+```{r echo=FALSE}
+base + geom_vline(xintercept=1946, col="blue", linetype = 2) +
+  geom_vline(xintercept=c(1996), col="red", linetype = 2) +
+  geom_text(mapping = aes(x = 1946,
+                          y = max(cdc),
+                          label = "wP",
+                          hjust = -0.1,
+                          vjust = 0), color="blue", size=3.4  ) +
+   geom_text(mapping = aes(x = 1996,
+                          y = max(cdc),
+                          label = "aP",
+                          hjust = -0.1,
+                          vjust = 0), color="red", size=3.4 ) 
+```
+
+- **Q3.** Why do you think there may be a lag from the time of aP introduction to the increasing case numbers in the early 2000s?
+
+`r hide("Hint")`
+It is clear from the CDC data that pertussis cases are once again increasing. For example, we can see that in 2012 the CDC reported 48,277 cases of pertussis in the United States. This is the largest number of cases reported since 1955, when 62,786 cases were reported. One of the main hypotheses to explain this resurgence is the **waning of immunity** in adolescents originally primed as infants with the newer aP vaccine as compared to the older wP vaccine.
+
+*Side-note:* There is a nice historical account of the wP to aP vaccine switch in the US and elsewhere here:
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4975064/
+`r unhide()`
+
+`r question_end()`
+ 
+
+
+
+> **Key-point:** Understanding the mechanisms underlying waning protection against pertussis requires evaluation of pertussis-specific immune responses over time in wP and aP vaccinated individuals. 
+
+# Exploring CMI-PB community resource
+
+The new and ongoing [**CMI-PB project**](https://www.cmi-pb.org/) aims to provide the scientific community with this very information. In particular, CMI-PB tracks and makes freely available long-term humoral and cellular immune response data for a large number of individuals who received either DTwP or DTaP combination vaccines in infancy followed by Tdap booster vaccinations. This includes complete API access to longitudinal RNA-Seq, AB Titer, Olink, and live cell assay results directly from their website: https://www.cmi-pb.org/ 
+
+
+## The CMI-PB API returns JSON foramt data
+
+The CMI-PB API (like most APIs) sends responses in JSON format. Briefly, JSON data is formatted as a series of **key-value pairs**, where a particular word ("key") is associated with a particular value. An example of the JSON format for Ab titer data is shown below:
+
+```
+{
+"specimen_id":1,
+ "isotype":"IgG",
+ "is_antigen_specific":true,
+ "antigen":"PT",
+ "ab_titer":68.5661390514946,
+ "unit":"IU/ML",
+ "lower_limit_of_detection":0.53
+ } 
+
+```
+
+
+To read these types of files into R we will use the `read_json()` function from the **jsonlite** package. Note that if you want to do more advanced querys of APIs directly from R you will likely want to explore the more full featured  **rjson** package. The big advantage of using jsonlite for our current purposes is that it can simplify JSON key-value pair arrays into R data frames without much additional effort on our part.
+
+```{r message=FALSE}
+# Allows us to read, write and process JSON data
+library(jsonlite)
+
+```
+
+Let's now read the main **subject** database table from the CMI-PB API. You can find out more about the content and format of this and other tables here: https://www.cmi-pb.org/blog/understand-data/
+
+
+```{r}
+subject <- read_json("https://www.cmi-pb.org/api/subject", simplifyVector = TRUE) 
+```
+
+
+Basically, the `subject` table provides metadata about each individual in the study group. For example, their infancy vaccination type, biological sex, year of birth etc.
+
+
+```{r}
+head(subject, 3)
+```
+
+
+`r question_start()`
+- **Q4.** How may aP and wP infancy vaccinated samples are in the dataset?
+
+`r hide("Solution")`
+```{r}
+table(subject$infancy_vac)
+```
+`r unhide()`
+
+- **Q5.** How many Male and Female subjects/patients are in the dataset?
+
+```{r eval=FALSE, echo=FALSE}
+table(subject$biological_sex)
+```
+
+- **Q6.** What is the breakdown of race and biological sex (e.g. number of Asian females, White males etc...)?
+
+`r hide("Hint")`
+```{r eval=FALSE}
+table(subject$___, subject$___) )
+```
+
+```{r echo=FALSE}
+knitr::kable( table(subject$biological_sex, subject$race) )
+```
+`r unhide()`
+
+`r question_end()`
+
+
+## Side-Note:  Working with dates
+
+Two of the columns of `subject` contain dates in the Year-Month-Day format. Recall from our last mini-project that dates and times can be annoying to work with at the best of times. However, in R we have the excellent lubridate package, which can make life allot easier. Here is a quick example to get you started:
+
+```{r message=FALSE}
+library(lubridate)
+```
+
+What is today’s date (at the time I am writing this obviously)
+```{r}
+today()
+```
+
+How many days have passed since new year 2000 
+
+```{r}
+today() - ymd("2000-01-01")
+```
+
+What is this in years?
+
+```{r}
+time_length( today() - ymd("2000-01-01"),  "years")
+```
+
+Note that here we are using the `ymd()` function to tell lubridate the format of our particular date and then the `time_length()` function to convert days to years.
+
+`r question_start()`
+- **Q7.** Using this approach determine (i) the average age of wP individuals, (ii) the average age of aP individuals; and (iii) are they significantly different? 
+
+`r hide("Hint")`
+```{r echo=FALSE}
+# Use todays date to calculate age in days
+subject$age <- today() - ymd(subject$year_of_birth)
+```
+
+```{r eval=FALSE}
+# Use todays date to calculate age in days
+subject$age <- today() - ___
+```
+
+
+```{r}
+library(dplyr)
+
+ap <- subject %>% filter(infancy_vac == "aP")
+
+round( summary( time_length( ap$age, "years" ) ) )
+```
+
+```{r eval=FALSE}
+# wP
+wp <- subject %>% ___(___ == "wP")
+round( summary( time_length( wp$age, "years" ) ) )
+
+```
+
+```{r echo=FALSE}
+# wP
+wp <- subject %>% filter(infancy_vac == "wP")
+round( summary( time_length( wp$age, "years" ) ) )
+```
+`r unhide()`
+
+
+
+
+- **Q8.** Determine the age of all individuals at time of boost?
+
+`r hide("Hint")`
+```{r}
+int <- ymd(subject$date_of_boost) - ymd(subject$year_of_birth)
+age_at_boost <- time_length(int, "year")
+head(age_at_boost)
+```
+
+`r unhide()`
+
+
+
+
+- **Q9.** With the help of a faceted boxplot (see below), do you think these two groups are significantly different? 
+
+```{r message=FALSE}
+ggplot(subject) +
+  aes(time_length(age, "year"),
+      fill=as.factor(infancy_vac)) +
+  geom_histogram(show.legend=FALSE) +
+  facet_wrap(vars(infancy_vac), nrow=2) 
+```
+
+`r hide("Hint")`
+Sure are, it is not necessary but we could calculate a p-value...
+```{r}
+# Or use wilcox.test() 
+x <- t.test(time_length( wp$age, "years" ),
+       time_length( ap$age, "years" ))
+
+x$p.value
+```
+`r unhide()`
+
+`r question_end()`
+
+
+# Joining multiple tables
+
+Read the specimen and ab_titer tables into R and store the data as `specimen` and `titer` named data frames.
+
+```{r echo=FALSE}
+specimen <- read_json("https://www.cmi-pb.org/api/specimen", simplifyVector = TRUE) 
+titer <- read_json("https://www.cmi-pb.org/api/ab_titer", simplifyVector = TRUE) 
+```
+
+```{r eval=FALSE}
+specimen <- read_json("___/specimen", simplifyVector = TRUE) 
+titer <- read_json("https://www.cmi-pb.org/api/___", simplifyVector = TRUE) 
+```
+
+
+
+To know whether a given `specimen_id` comes from an aP or wP individual we need to merge (a.k.a. "join") 
+our `specimen` and `subject` data frames. The excellent **dplyr** package (that we have used previously) has a family of `join()` functions that can help us with this common task: 
+
+`r question_start()`
+- **Q9.** Complete the code to join `specimen` and `subject` tables to make a new merged data frame containing all specimen records along with their associated subject details: 
+
+```{r eval=FALSE}
+meta <- ____join(___, subject)
+dim(meta)
+head(meta)
+```
+
+```{r echo=FALSE, message=FALSE}
+meta <- inner_join(specimen, subject)
+dim(meta)
+```
+
+- **Q10.** Now using the same procedure join `meta` with `titer` data so we can further analyze this data in terms of time of visit aP/wP, male/female etc.
+
+```{r eval=FALSE}
+abdata <- inner_join(___, meta)
+dim(abdata)
+```
+
+```{r echo=FALSE}
+abdata <- inner_join(titer, meta)
+dim(abdata)
+```
+
+```{r}
+table(abdata$isotype)
+```
+`r question_end()`
+
+
+## Examine IgG1 Ab titer leves - TO IMPROVE WITH BJOERN
+
+Now using our fully merged `abdata` dataset `filter()` for IgG1 `isotype` and make a crazy ass boxplot of ab_titer levels for all antigens: 
+
+```{r}
+ig1 <- abdata %>% filter(isotype == "IgG1")
+head(ig1)
+
+ggplot(ig1) +
+  aes(ab_titer, antigen, col=infancy_vac ) +
+  geom_boxplot(show.legend = FALSE) + 
+  facet_wrap(vars(ig1$visit))
+```
+
+We should exclude visit 8 as there are not may data points...
+
+```{r}
+table(ig1$visit)
+```
+
+```{r}
+tmp <- filter(ig1, visit!=8)
+table(tmp$visit)
+```
+
+```{r}
+ggplot(tmp) +
+  aes(ab_titer, antigen, col=infancy_vac ) +
+  geom_boxplot(show.legend = FALSE) + 
+  facet_wrap(vars(visit), nrow=2) +
+  theme_bw()
+
+```
+
+```{r}
+ggplot(tmp) +
+  aes(ab_titer, antigen, col=infancy_vac ) +
+  geom_boxplot(show.legend = FALSE) + 
+  facet_wrap(vars(infancy_vac, visit), nrow=2)
+
+```
+
+Plot of Measles IgG1
+
+```{r}
+filter(tmp, antigen=="Measles") %>%
+  ggplot() +
+  aes(ab_titer, col=infancy_vac) +
+  geom_boxplot() +
+  facet_wrap(vars(visit))
+```
+```{r}
+filter(tmp, antigen=="FIM2/3") %>%
+  ggplot() +
+  aes(ab_titer, col=infancy_vac) +
+  geom_boxplot(show.legend = FALSE) +
+  facet_wrap(vars(visit)) +
+  labs(title="FIM2/3 levels per visit (aP red, wP teal)") +
+  theme_bw() +
+  theme(axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) 
+
+```
+
+
+
+
+# Working with CMI-PB RNASeq data
+
+For RNA-Seq data the API query mechanism quickly hits the web browser interface limit for file size.
+We can still do targeted RNA-Seq querys, For example we can obtain RNA-Seq results for a specific ENSEMBLE gene id. Multiple IDs can be combined with the & character:
+
+```
+# Use the following URL
+https://www.cmi-pb.org/api/v2/rnaseq?versioned_ensembl_gene_id=eq.ENSG00000211896.7
+```
+
+```{r}
+url <- "https://www.cmi-pb.org/api/v2/rnaseq?versioned_ensembl_gene_id=eq.ENSG00000211896.7"
+
+rna <- read_json(url, simplifyVector = TRUE) 
+```
+
+However as even these querys can quickly become large requests CMI-PB makes CSV files available for download from: https://www.cmi-pb.org/downloads/cmipb_challenge_datasets/2021_cmipb_challenge/
+
+Here we will download the `2020LD_rnaseq.csv` file, which is over 321MB so the download may take some time over slow internet connections. 
+
+Whilst downloading let's join our single gene `rna` data with our `meta` object that is itself a join of subject and specimen tables. This will allow us to look at this genes TPM expression values over aP/wP and at different visits:
+
+
+```{r}
+#meta <- inner_join(specimen, subject)
+ssrna <- inner_join(rna, meta)
+
+ggplot(ssrna) +
+  aes(tpm, col=infancy_vac) +
+  geom_boxplot() +
+  facet_wrap(vars(visit))
+```
+
+Let's focus in on visit 4
+
+```{r}
+
+ssrna %>%  
+  filter(visit==4) %>% #%>% select(visit) #%>% head()
+  ggplot() +
+    aes(tpm, col=infancy_vac) + geom_density() + 
+    geom_rug() 
+```
+> Q. Facet by biological sex `+ facet_wrap(vars(biological_sex))` any obvious difference?
+
+
+
+
+### Read from CSV downloads file
+
+Due to the API file size limitation CMI-PB make a large CSV format file with all RNA-Seq count and TPM data available for download. We will take their "2020 longitudinal RNA-Seq data" file (named `2020LD_rnaseq.csv`) from here:
+https://www.cmi-pb.org/downloads/cmipb_challenge_datasets/2021_cmipb_challenge/
+
+
+```{r}
+rnaseq <- read.csv("~/Downloads/2020LD_rnaseq.csv")
+
+head(rnaseq,3)
+```
+
+This is rather large, look at the number of rows we have here:
+```{r}
+dim(rnaseq)
+```
+
+Also note that this data is in so-called **"long" format** rather than the more conventional **"wide" format** tables of expression data that we have worked with in the past (where rows represent genes and different columns represent counts in different experiments with a column per experiment). Here we have genes in the rows but have we counts for all experiments collated together in one column. Along with this we have our now familiar `specimen_id` column to tell us which experiment the values come from.  
+
+Lets have a look at how many genes we have reported for each `specimen_id` with our old friend the `table()` function.
+
+```{r}
+n_genes <- table(rnaseq$specimen_id)
+head( n_genes , 10)
+```
+
+How many specimens?
+```{r}
+length(n_genes)
+```
+Check if there are the same number of genes for each specimen
+```{r}
+all(n_genes[1]==n_genes)
+```
+
+## Convert to "wide" format
+
+All looks good at this stage. Let's convert to wider format with the `pivot_wider()` function:
+
+```{r wideformat}
+library(tidyr)
+
+rna_wide <- rnaseq %>% 
+  #select(versioned_ensembl_gene_id, specimen_id, raw_count) %>%
+  #pivot_wider(names_from = specimen_id, values_from=raw_count) 
+  select(versioned_ensembl_gene_id, specimen_id, tpm) %>%
+  pivot_wider(names_from = specimen_id, values_from=tpm)
+
+dim(rna_wide)
+```
+
+
+```{r}
+head(rna_wide[,1:7], 3)
+```
+
+As usual we have lots of zero count genes that should be removed (i.e. filtered out) before most further analysis.
+
+## Filtering
+
+As we have done in previous analyses we can implement a filtering step to remove genes which are expressed at low levels or show only small changes in expression. A popular procedure is the setting of a minimum threshold for variation.
+
+
+```{r}
+sum.counts <- rowSums(rna_wide[,-1])
+sd.counts <- apply(rna_wide[,-1],1,sd)
+
+#plot(sd.counts)
+rna <- rna_wide[sum.counts > 5, ]
+#plot( sort(), ylim=c(0,100) )
+```
+
+```{r}
+nrow(rna_wide)
+nrow(rna)
+```
+
+We maybe need to compare visit 1 to visit 4 for some aP and wP folks and call pathways or something?
+
+
+
+### PCA does not show shit
+
+```{r}
+pca <- prcomp(t(rna[,-1]), scale=TRUE)
+summary(pca)
+```
+
+
+Metadata is in `meta` object. we can pull that to annotate our RNA seq dataset.
+```{r}
+ref_specimine_ids <- colnames(rna_wide[,-1])
+
+y <- data.frame(specimen_id=as.numeric(ref_specimine_ids))
+z <- inner_join(y, meta)
+head(z)
+```
+
+```{r}
+# Color by wP/aP
+plot(pca$x[,1:2], col=as.factor(z$infancy_vac))
+
+# Color by visit number
+plot(pca$x[,1:2], col=as.factor(z$visit))
+```
+
+
+> QX. Investigate the relationship between Ab titers and mRNA levels on different days. Is RNA-Seq expresion levels predictive of Ab titers?
+
+
+---
+
+
+
+# Some guiding questions
+
+Look at isotype IgG 
+
+Look at different antigen's time course
+
+Parse the subject data from the cmi-pb database. This is in JSON format.
+
+> Q. How many infancy_vac are aP and wP ?
+
+Add specimen count to subject table ()
+
+> Q. How many subjects have a specimen count on day all days?  
+
+> Q. Is there variability in igG Ab levels with time?
+
+> Q. Do we see a difference between ap and wP?
+
+> Q. Something with RNA-Seq levels
+
+> Q. Investigate the relationship between Ab titers and mRNA levels on different days. Is RNA-Seq expresion levels predictive of Ab titers?
+
+
+
+## Translate identifiers:
+
+```{r message=FALSE}
+library(AnnotationDbi)
+library(org.Hs.eg.db)
+
+#columns(org.Hs.eg.db)
+mapIds(org.Hs.eg.db,
+        keys="ENSG00000211896",
+        keytype="ENSEMBL",
+        column="SYMBOL")
+
+mapIds(org.Hs.eg.db,
+        keys="ENSG00000211896",
+        keytype="ENSEMBL",
+        column="GENENAME")
+
+```
+
+# About this document
+
+Here we use the `sessionInfo()` function to report on our R systems setup at the time of document execution. 
+
+```{r}
+sessionInfo()
+```
+
