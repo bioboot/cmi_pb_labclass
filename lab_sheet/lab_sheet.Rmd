@@ -37,23 +37,14 @@ library(tidyverse)
 
 # Background  
 
-![](vacine.png "Whole-cell pertussis vaccines are inactivated bacteria with many antigens, including endotoxins, which trigger broad immunity. The acellular vaccines use only a few antigens, including a weakened pertussis toxin, to limit side effects."){style="float: right;" width="300"}
-Pertussis (more commonly known as **whooping cough**) is reemerging worldwide despite effective vaccination programs. This highly contagious respiratory disease is caused by the bacterium *Bordetella pertussis*. People of all ages can be infected leading to violent coughing fits, vomiting and apnea (with characteristic strained breathing associated "whooping" sounds). However, pertussis is most severe and life threatening for infants. Indeed, recent estimates from the WHO suggest that approximately 16 million cases and 200,000 infant deaths are due to pertussis annually [1](https://pubmed.ncbi.nlm.nih.gov/20466419/).
+Pertussis (more commonly known as **whooping cough**) is a highly contagious respiratory disease caused by the bacterium *Bordetella pertussis*. People of all ages can be infected leading to violent coughing fits followed by a high-pitched intake of breath that sounds like "whoop". Infants and toddlers have the highest risk for severe complications and death. Recent estimates from the WHO suggest that approximately 16 million cases and 200,000 infant deaths are due to pertussis annually [1](https://pubmed.ncbi.nlm.nih.gov/20466419/).
 
-Pertussis vaccination is, in general, highly effective at preventing the disease. In the pre-vaccine era pertussis was a much more common disease and a major cause of infant mortality [2](https://www.cdc.gov/vaccines/pubs/surv-manual/chpt10-pertussis.html). As we will see from analysis of CDC data below, introduction of pertussis vaccination in the United States resulted in a dramatic reduction in the number of yearly cases from > 200,000 in the 1940s to < 2,000 in 1970s. **Unfortunately, in recent years we have seen a significant resurgence in pertussis cases with large outbreaks now once again a major public health concern.** 
-
-> **Key-question:** Why is this vaccine-preventable disease on the upswing?
-
-## A tale of two vaccines
-
-Two types of pertussis vaccines are currently available: **whole-cell pertussis (wP)** and **acellular pertussis (aP)**. The latter aP vaccines use purified antigens of the bacteria and were developed to have less side effects than the older wP vaccines. Currently in United States aP vaccines are administered to infants in combination with those for **d**iphtheria (D) and **t**etanus (T) in the so-called **DTaP vaccine** combo.  A distinct **Tdap** formulation, with reduced doses of diphtheria and pertussis, is administered as a boost for preteens, teens, and adults.
-
-> **Key-point:** Despite high levels of acellular pertussis (aP) vaccination, the United States and other countries are now experiencing increasing pertussis case numbers. To investigating this further let's examine the history of CDC reported case numbers along with the time points for wP and aP vaccine introduction. 
+> **Optional:** Link to a [video of a child with pertussis](https://www.youtube.com/watch?v=S3oZrMGDMMw) (Note that some viewers may find this upsetting).
 
 
-# Investigating pertussis cases by year
+# 1. Investigating pertussis cases by year
 
-The CDC has been compiling reported pertussis case numbers since 1922 in their *National Notifiable Diseases Surveillance System* (NNDSS). We can view this data on the CDC website here: https://www.cdc.gov/pertussis/surv-reporting/cases-by-year.html
+The United States Centers for Disease Control and Prevention (CDC) has been compiling reported pertussis case numbers since 1922 in their *National Notifiable Diseases Surveillance System* (NNDSS). We can view this data on the CDC website here: https://www.cdc.gov/pertussis/surv-reporting/cases-by-year.html
 
 
 ```{r cdcdata, echo=FALSE}
@@ -95,7 +86,7 @@ cdc <- data.frame(
 ```
 
 `r question_start()`
-- **Q1.**  With the help of the R "addin" package [**datapasta**](https://milesmcbain.github.io/datapasta/) assign the CDC pertussis case number data to a data frame called `cdc` and use **ggplot** or base R to make the following plot.
+- **Q1.**  With the help of the R "addin" package [**datapasta**](https://milesmcbain.github.io/datapasta/) assign the CDC pertussis case number data to a data frame called `cdc` and use **ggplot** to make a plot of cases numbers over time.
 
 `r hide("Hint")`
 To help "scrape" this data from the CDC website you can install the [**datapasta package**](https://milesmcbain.github.io/datapasta/), which will appear under the RStudio "**Addins**" menu button and allow you to web-scrape by copying tables of data from any website or PDF and then in RStudio selecting *"Paste as data.frame"* from the RStudio "**Addins**" menu. 
@@ -109,7 +100,7 @@ ggplot(cdc) +
   labs(___)
 ```
 
-`r unhide()`
+
 
 ```{r cdcplot, echo=FALSE}
 library(ggplot2)
@@ -124,9 +115,35 @@ base <- ggplot(cdc) +
 print(base)
 ```
 
-- **Q2.** Using the `geom_vline()` function add a line for the 1946 introduction of the wP vaccine and the 1996 switch to aP vaccine (see example below). 
+`r unhide()`
+
+`r question_end()`
+
+> **Key point:** Pertussis vaccination is, in general, highly effective at preventing the disease. In the pre-vaccine era (before 1946) pertussis was a much more common disease and a major cause of infant mortality [2](https://www.cdc.gov/vaccines/pubs/surv-manual/chpt10-pertussis.html). As we see clearly from analysis of the CDC tracking data above, introduction of the first pertussis vaccination in the United States in 1946 resulted in a dramatic reduction in the number of yearly cases from > 200,000 in the 1940s to < 2,000 in the 1970s. 
+
+# 2. A tale of two vaccines
+
+![](vacine.png "Whole-cell pertussis vaccines are inactivated bacteria with many antigens, including endotoxins, which trigger broad immunity. The acellular vaccines use only a few antigens, including a weakened pertussis toxin, to limit side effects."){style="float: right;" width="300"}
+Two types of pertussis vaccines are currently available: **whole-cell pertussis (wP)** and **acellular pertussis (aP)**. The first vaccines were composed of ‘whole cell’ (wP) inactivated bacteria. The latter aP vaccines use purified antigens of the bacteria (the most important pertussis components for our immune system). These aP vaccines were developed to have less side effects than the older wP vaccines and are now the only form administered in the United States.  
 
 
+> *Side-note*: Currently in United States aP vaccines are administered to infants in combination with those for **d**iphtheria (D) and **t**etanus (T) in the so-called **DTaP vaccine** combination.  A distinct **Tdap** formulation, with reduced doses of diphtheria and pertussis, is administered as a boost for preteens, teens, and adults.
+
+For motivated readers there is a nice historical account of the wP to aP vaccine switch in the US and elsewhere here:
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4975064/
+
+Let's return to our CDC data plot and examine what happened after the switch to the acellular pertussis (aP) vaccination program.
+
+
+
+
+`r question_start()`
+- **Q2.** Using the ggplot `geom_vline()` function add lines to your previous plot for the 1946 introduction of the wP vaccine and the 1996 switch to aP vaccine (see example in the hint below). What do you notice?  
+
+
+`r hide("Hint")`
+
+Your plot should look something like the one below where we take our plot from Q1  and minimally add two `geom_vline(xintercept=___)` function calls. Here I also add optional text labels with `geom_text()` to help annotate the lines.
 
 ```{r echo=FALSE}
 base + geom_vline(xintercept=1946, col="blue", linetype = 2) +
@@ -143,25 +160,38 @@ base + geom_vline(xintercept=1946, col="blue", linetype = 2) +
                           vjust = 0), color="red", size=3.4 ) 
 ```
 
-- **Q3.** Why do you think there may be a lag from the time of aP introduction to the increasing case numbers in the early 2000s?
+`r unhide()`
+
+
+- **Q3.** Describe what happened after the introduction of the aP vaccine? Do you have a possible explanation for the observed trend?
 
 `r hide("Hint")`
-It is clear from the CDC data that pertussis cases are once again increasing. For example, we can see that in 2012 the CDC reported 48,277 cases of pertussis in the United States. This is the largest number of cases reported since 1955, when 62,786 cases were reported. One of the main hypotheses to explain this resurgence is the **waning of immunity** in adolescents originally primed as infants with the newer aP vaccine as compared to the older wP vaccine.
+It is clear from the CDC data that pertussis cases are once again increasing. For example, we can see that in 2012 the CDC reported 48,277 cases of pertussis in the United States. This is the largest number of cases reported since 1955, when 62,786 cases were reported. The pertussis field has several hypotheses for the resurgence of pertussis including (in no particular order): **1)** more sensitive PCR-based testing, **2)** vaccination hesitancy **3)** bacterial evolution (escape from vaccine immunity), **4)** waning of immunity in adolescents originally primed as infants with the newer aP vaccine as compared to the older wP vaccine.
 
-*Side-note:* There is a nice historical account of the wP to aP vaccine switch in the US and elsewhere here:
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4975064/
+
 `r unhide()`
 
 `r question_end()`
  
+> **Key-point:** Despite high levels of acellular pertussis (aP) vaccination, the United States and other countries are now experiencing a significant resurgence in pertussis cases with large outbreaks now once again a major public health concern.
+
+**Additional points for discussion:** How are vaccines currently approved?
+
+- Typically we examine *‘Correlates of protection’* and need to conclude a study in finite time. For the aP vaccine there is an induction of pertussis toxin (PT) antibody titers in infants at equivalent levels to those induced by the wP vaccine. The aP vaccines also had less side effects (reduction of sore arms, fever and pain). 
+- It is impossible to discover a effect 10 years post vaccination in the current trial system
+- It is unclear what differentiates people that have been primed with aP vs. wP long term
+- CMI-PB project is an attempt to make data on this question open an examinable by all.
 
 
 
-> **Key-point:** Understanding the mechanisms underlying waning protection against pertussis requires evaluation of pertussis-specific immune responses over time in wP and aP vaccinated individuals. 
+# 3. Exploring CMI-PB data
 
-# Exploring CMI-PB community resource
+**Why is this vaccine-preventable disease on the upswing?** To answer this question we need to investigate the mechanisms underlying waning protection against pertussis. This requires evaluation of pertussis-specific immune responses over time in wP and aP vaccinated individuals. 
 
 The new and ongoing [**CMI-PB project**](https://www.cmi-pb.org/) aims to provide the scientific community with this very information. In particular, CMI-PB tracks and makes freely available long-term humoral and cellular immune response data for a large number of individuals who received either DTwP or DTaP combination vaccines in infancy followed by Tdap booster vaccinations. This includes complete API access to longitudinal RNA-Seq, AB Titer, Olink, and live cell assay results directly from their website: https://www.cmi-pb.org/ 
+
+> **Key-point**: For the CMI-PB project a booster shot is a proxy for what happens when you get infected.	
+
 
 
 ## The CMI-PB API returns JSON foramt data
@@ -198,7 +228,7 @@ subject <- read_json("https://www.cmi-pb.org/api/subject", simplifyVector = TRUE
 ```
 
 
-Basically, the `subject` table provides metadata about each individual in the study group. For example, their infancy vaccination type, biological sex, year of birth etc.
+> **Key-point:** The `subject` table provides metadata about each individual in the study group. For example, their infancy vaccination type, biological sex, year of birth, time of boost etc.
 
 
 ```{r}
@@ -207,7 +237,7 @@ head(subject, 3)
 
 
 `r question_start()`
-- **Q4.** How may aP and wP infancy vaccinated samples are in the dataset?
+- **Q4.** How may aP and wP infancy vaccinated subjects are in the dataset?
 
 `r hide("Solution")`
 ```{r}
@@ -341,7 +371,7 @@ x$p.value
 `r question_end()`
 
 
-# Joining multiple tables
+## Joining multiple tables
 
 Read the specimen and ab_titer tables into R and store the data as `specimen` and `titer` named data frames.
 
@@ -351,14 +381,14 @@ titer <- read_json("https://www.cmi-pb.org/api/ab_titer", simplifyVector = TRUE)
 ```
 
 ```{r eval=FALSE}
+# Complete the API UTLs...
 specimen <- read_json("___/specimen", simplifyVector = TRUE) 
 titer <- read_json("https://www.cmi-pb.org/api/___", simplifyVector = TRUE) 
 ```
 
 
 
-To know whether a given `specimen_id` comes from an aP or wP individual we need to merge (a.k.a. "join") 
-our `specimen` and `subject` data frames. The excellent **dplyr** package (that we have used previously) has a family of `join()` functions that can help us with this common task: 
+To know whether a given `specimen_id` comes from an aP or wP individual we need to link (a.k.a. "join" or merge) our `specimen` and `subject` data frames. The excellent **dplyr** package (that we have used previously) has a family of `join()` functions that can help us with this common task: 
 
 `r question_start()`
 - **Q9.** Complete the code to join `specimen` and `subject` tables to make a new merged data frame containing all specimen records along with their associated subject details: 
@@ -374,6 +404,17 @@ meta <- inner_join(specimen, subject)
 dim(meta)
 ```
 
+`r hide("Hint")`
+To answer this question you need to chose the correct `join()` function (from `inner_join()`, `left_join()`, `right_join()` and `full_join()` options) as well as select the order of `x` and `y` input arguments.
+
+![](https://raw.githubusercontent.com/gadenbuie/tidyexplain/main/images/inner-join.gif)
+
+![](https://raw.githubusercontent.com/gadenbuie/tidyexplain/main/images/full-join.gif)
+
+For a nice description of other join types see: https://www.garrickadenbuie.com/project/tidyexplain/ from where the animated images above were taken.
+
+`r unhide()`
+
 - **Q10.** Now using the same procedure join `meta` with `titer` data so we can further analyze this data in terms of time of visit aP/wP, male/female etc.
 
 ```{r eval=FALSE}
@@ -386,39 +427,63 @@ abdata <- inner_join(titer, meta)
 dim(abdata)
 ```
 
+- **Q11.** How many specimens (i.e. entries in `abdata`) do we have for each `isotype`? 
+
+`r hide("Hint")`
+We can use our old friend the `table()` function on the `isotype` column to answer this question: 
+
 ```{r}
 table(abdata$isotype)
 ```
+`r unhide()`
+
+- **Q12.** What do you notice about the number of visit 8 specimens compared to other visits?
+
+`r hide("Hint")`
+You can again use `table()` this time on the the `visit` column to help answer this question.
+
+`r unhide()`
+
 `r question_end()`
 
 
-## Examine IgG1 Ab titer leves - TO IMPROVE WITH BJOERN
+# 4. Examine IgG1 Ab titer levels
 
-Now using our fully merged `abdata` dataset `filter()` for IgG1 `isotype` and make a crazy ass boxplot of ab_titer levels for all antigens: 
+Now using our joined/merged/linked `abdata` dataset `filter()` for IgG1 `isotype` and exclude the small number of visit 8 entries.  
 
 ```{r}
-ig1 <- abdata %>% filter(isotype == "IgG1")
+ig1 <- abdata %>% filter(isotype == "IgG1", visit!=8)
 head(ig1)
+```
 
+`r question_start()`
+- **Q13.** Complete the following code to make a summary boxplot of Ab titer levels for all antigens: 
+
+```{r eval=FALSE}
 ggplot(ig1) +
-  aes(ab_titer, antigen, col=infancy_vac ) +
-  geom_boxplot(show.legend = FALSE) + 
-  facet_wrap(vars(ig1$visit))
+  aes(___, antigen) +
+  geom____() + 
+  facet_wrap(vars(visit), nrow=2)
 ```
 
-We should exclude visit 8 as there are not may data points...
 
-```{r}
-table(ig1$visit)
+```{r echo=FALSE}
+ggplot(ig1) +
+  aes(ab_titer, antigen) +
+  geom_boxplot() + 
+  facet_wrap(vars(visit), nrow=2)
+
 ```
+   
+
+- **Q14.** What antigens show differences in the level of IgG1 antibody titers recognizing them over time? Why these and not others? 
+
+`r question_end()`
+
+We can attempt to examine differences between wP and aP here by setting color and/or facet values of the plot to include `infancy_vac` status (see below). However these plots tend to be rather busy and thus hard to interpret easily. 
 
 ```{r}
-tmp <- filter(ig1, visit!=8)
-table(tmp$visit)
-```
-
-```{r}
-ggplot(tmp) +
+ggplot(ig1) +
   aes(ab_titer, antigen, col=infancy_vac ) +
   geom_boxplot(show.legend = FALSE) + 
   facet_wrap(vars(visit), nrow=2) +
@@ -426,48 +491,90 @@ ggplot(tmp) +
 
 ```
 
+Another version of this plot adding `infancy_vac` to the faceting:
+
 ```{r}
-ggplot(tmp) +
+ggplot(ig1) +
   aes(ab_titer, antigen, col=infancy_vac ) +
   geom_boxplot(show.legend = FALSE) + 
   facet_wrap(vars(infancy_vac, visit), nrow=2)
 
 ```
 
-Plot of Measles IgG1
+`r question_start()`
+- **Q15.** Filter to pull out only two specific antigens for analysis and create a boxplot for each. You can chose any you like. Below I picked a "control" antigen (**"Measles"**, that is not in our vaccines) and a clear antigen of interest (**"FIM2/3"**, extracellular fimbriae proteins from *B. pertussis* that participate in substrate attachment). 
 
-```{r}
-filter(tmp, antigen=="Measles") %>%
+
+```{r eval=FALSE}
+filter(ig1, antigen=="Measles") %>%
   ggplot() +
   aes(ab_titer, col=infancy_vac) +
-  geom_boxplot() +
-  facet_wrap(vars(visit))
+  geom_boxplot(show.legend = ___) +
+  facet_wrap(vars(visit)) +
+  theme_bw()
 ```
-```{r}
-filter(tmp, antigen=="FIM2/3") %>%
+
+
+```{r echo=FALSE}
+filter(ig1, antigen=="Measles") %>%
   ggplot() +
   aes(ab_titer, col=infancy_vac) +
   geom_boxplot(show.legend = FALSE) +
   facet_wrap(vars(visit)) +
-  labs(title="FIM2/3 levels per visit (aP red, wP teal)") +
+  labs(title="Measles antigen levels per visit (aP red, wP teal)") +
   theme_bw() +
   theme(axis.text.y=element_blank(),
         axis.ticks.y=element_blank()) 
 
 ```
+and the same for `antigen=="FIM2/3"` 
 
+```{r eval=FALSE}
+filter(ig1, antigen==___) %>%
+  ggplot() +
+  aes(ab_titer, col=infancy_vac) +
+  geom_boxplot(show.legend = ___) +
+  facet_wrap(vars(visit)) +
+  theme_bw()
+```
 
-
-
-# Working with CMI-PB RNASeq data
-
-For RNA-Seq data the API query mechanism quickly hits the web browser interface limit for file size.
-We can still do targeted RNA-Seq querys, For example we can obtain RNA-Seq results for a specific ENSEMBLE gene id. Multiple IDs can be combined with the & character:
+```{r echo=FALSE}
+filter(ig1, antigen=="FIM2/3") %>%
+  ggplot() +
+  aes(ab_titer, col=infancy_vac) +
+  geom_boxplot(show.legend = FALSE) +
+  facet_wrap(vars(visit)) +
+  labs(title="FIM2/3 antigen levels per visit (aP red, wP teal)") +
+  theme_bw() +
+  theme(axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) 
 
 ```
-# Use the following URL
+  
+
+- **Q16.** What do you notice about these two antigens time course and the FIM2/3 data in particular?
+
+`r hide("Hint")`
+FIM2/3 levels clearly rise over time and far exceed those of Measles. They also appear to peak at visit 5 and then decline. This trend appears similar for for wP and aP subjects.
+`r unhide()`
+
+- **Q17.** Do you see any clear difference in aP vs. wP responses? 
+`r question_end()`
+
+
+# 5. Working with CMI-PB RNASeq data
+
+For RNA-Seq data the API query mechanism quickly hits the web browser interface limit for file size. We will present alternative download mechanisms for larger CMI-PB datasets in a later section. However, we can still do "targeted" RNA-Seq querys via the web accessible API. 
+
+For example we can obtain RNA-Seq results for a specific ENSEMBLE gene identifier or multiple identifiers combined with the & character:
+
+```
+# For example use the following URL
 https://www.cmi-pb.org/api/v2/rnaseq?versioned_ensembl_gene_id=eq.ENSG00000211896.7
 ```
+
+The link above is for the key gene involved in expressing any IgG1 antibody, namely the [IGHG1 gene](https://uswest.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000211896;r=14:105736343-105743071). Let's read available RNA-Seq data for this gene into R and investigate the time course of it's gene expression values. 
+
 
 ```{r}
 url <- "https://www.cmi-pb.org/api/v2/rnaseq?versioned_ensembl_gene_id=eq.ENSG00000211896.7"
@@ -475,16 +582,35 @@ url <- "https://www.cmi-pb.org/api/v2/rnaseq?versioned_ensembl_gene_id=eq.ENSG00
 rna <- read_json(url, simplifyVector = TRUE) 
 ```
 
-However as even these querys can quickly become large requests CMI-PB makes CSV files available for download from: https://www.cmi-pb.org/downloads/cmipb_challenge_datasets/2021_cmipb_challenge/
-
-Here we will download the `2020LD_rnaseq.csv` file, which is over 321MB so the download may take some time over slow internet connections. 
-
-Whilst downloading let's join our single gene `rna` data with our `meta` object that is itself a join of subject and specimen tables. This will allow us to look at this genes TPM expression values over aP/wP and at different visits:
+To facilitate further analysis we need to "join" the `rna` expression data with our metadata `meta`, which is itself a join of sample and specimen data. This will allow us to look at this genes TPM expression values over aP/wP status and at different visits (i.e. times):
 
 
 ```{r}
 #meta <- inner_join(specimen, subject)
 ssrna <- inner_join(rna, meta)
+```
+
+
+- **Q18.** Make a plot of the time course of gene expression for IGHG1 gene (i.e. a plot of `visit` vs. `tpm`).
+
+```{r}
+ggplot(ssrna) +
+  aes(visit, tpm, group=subject_id) +
+  geom_point() +
+  geom_line(alpha=0.2)
+```
+
+
+- **Q19.**: What do you notice about the expression of this gene (i.e. when is it at it's maximum level)?
+
+- **Q20.** Does this pattern in time match the trend of antibody titer data? If not, why not? 
+
+(answer: cells make antibodies, which are long lived)
+
+
+Going further with `infancy_vac` status:
+
+```{r}
 
 ggplot(ssrna) +
   aes(tpm, col=infancy_vac) +
@@ -502,18 +628,23 @@ ssrna %>%
     aes(tpm, col=infancy_vac) + geom_density() + 
     geom_rug() 
 ```
-> Q. Facet by biological sex `+ facet_wrap(vars(biological_sex))` any obvious difference?
+ 
+> OPTIONAL Q. Facet by biological sex `+ facet_wrap(vars(biological_sex))` any obvious difference?
 
 
 
 
-### Read from CSV downloads file
 
-Due to the API file size limitation CMI-PB make a large CSV format file with all RNA-Seq count and TPM data available for download. We will take their "2020 longitudinal RNA-Seq data" file (named `2020LD_rnaseq.csv`) from here:
+# 6. [OPTIONAL] Obtaining larger RNA-Seq datasets
+
+As API based RNA-Seq querys can quickly become large requests, CMI-PB makes CSV files available for download. We will take their "2020 longitudinal RNA-Seq data" file (named `2020LD_rnaseq.csv`) from here:
 https://www.cmi-pb.org/downloads/cmipb_challenge_datasets/2021_cmipb_challenge/
+
+> **Note:** This file is over 321MB so the download may take some time over slow internet connections. 
 
 
 ```{r}
+# Change for your downloaded file path
 rnaseq <- read.csv("~/Downloads/2020LD_rnaseq.csv")
 
 head(rnaseq,3)
@@ -524,7 +655,9 @@ This is rather large, look at the number of rows we have here:
 dim(rnaseq)
 ```
 
-Also note that this data is in so-called **"long" format** rather than the more conventional **"wide" format** tables of expression data that we have worked with in the past (where rows represent genes and different columns represent counts in different experiments with a column per experiment). Here we have genes in the rows but have we counts for all experiments collated together in one column. Along with this we have our now familiar `specimen_id` column to tell us which experiment the values come from.  
+## Working with long format data
+
+Note that our `rnadata` is in so-called **"long" format** rather than the more conventional **"wide" format** tables of expression data that we have worked with in the past (where rows represent genes and different columns represent counts in different experiments with a column per experiment). Here we have genes in the rows but have we counts for all experiments collated together in one column. Along with this we have our now familiar `specimen_id` column to tell us which experiment the values come from.  
 
 Lets have a look at how many genes we have reported for each `specimen_id` with our old friend the `table()` function.
 
@@ -537,21 +670,20 @@ How many specimens?
 ```{r}
 length(n_genes)
 ```
+
 Check if there are the same number of genes for each specimen
 ```{r}
 all(n_genes[1]==n_genes)
 ```
 
-## Convert to "wide" format
+### Convert to "wide" format
 
-All looks good at this stage. Let's convert to wider format with the `pivot_wider()` function:
+All looks good at this stage so let's convert to wider format with the `pivot_wider()` function from the **tidyr** package:
 
 ```{r wideformat}
 library(tidyr)
 
 rna_wide <- rnaseq %>% 
-  #select(versioned_ensembl_gene_id, specimen_id, raw_count) %>%
-  #pivot_wider(names_from = specimen_id, values_from=raw_count) 
   select(versioned_ensembl_gene_id, specimen_id, tpm) %>%
   pivot_wider(names_from = specimen_id, values_from=tpm)
 
@@ -563,106 +695,22 @@ dim(rna_wide)
 head(rna_wide[,1:7], 3)
 ```
 
-As usual we have lots of zero count genes that should be removed (i.e. filtered out) before most further analysis.
 
 ## Filtering
 
-As we have done in previous analyses we can implement a filtering step to remove genes which are expressed at low levels or show only small changes in expression. A popular procedure is the setting of a minimum threshold for variation.
+As usual we have lots of zero count genes that can be removed (i.e. filtered out) before further analysis. Generally we will want to remove genes which are expressed at low levels or show only small changes in expression. 
 
+Once you have done this we can begin to investigate the relationship between mRNA levels on different days and ultimately address the next pressing questions: 
 
-```{r}
-sum.counts <- rowSums(rna_wide[,-1])
-sd.counts <- apply(rna_wide[,-1],1,sd)
+> **Key-questions:** 
+>
+> - Is RNA-Seq expression levels predictive of Ab titers?
+> - What differentiates aP vs. wP primed individuals? 
+> - What about decades after their first immunization? Do you know? Contact Bjoern for your trip to Sweden
 
-#plot(sd.counts)
-rna <- rna_wide[sum.counts > 5, ]
-#plot( sort(), ylim=c(0,100) )
-```
+ 
+There are immune responses not captured in antibody titers. We are trying to capture the ‘systems level’ response to antigen encounters (here: vaccination). Something must be different in aP vs. wP primed individuals. That is why CMI-PB make all their data available. 
 
-```{r}
-nrow(rna_wide)
-nrow(rna)
-```
-
-We maybe need to compare visit 1 to visit 4 for some aP and wP folks and call pathways or something?
-
-
-
-### PCA does not show shit
-
-```{r}
-pca <- prcomp(t(rna[,-1]), scale=TRUE)
-summary(pca)
-```
-
-
-Metadata is in `meta` object. we can pull that to annotate our RNA seq dataset.
-```{r}
-ref_specimine_ids <- colnames(rna_wide[,-1])
-
-y <- data.frame(specimen_id=as.numeric(ref_specimine_ids))
-z <- inner_join(y, meta)
-head(z)
-```
-
-```{r}
-# Color by wP/aP
-plot(pca$x[,1:2], col=as.factor(z$infancy_vac))
-
-# Color by visit number
-plot(pca$x[,1:2], col=as.factor(z$visit))
-```
-
-
-> QX. Investigate the relationship between Ab titers and mRNA levels on different days. Is RNA-Seq expresion levels predictive of Ab titers?
-
-
----
-
-
-
-# Some guiding questions
-
-Look at isotype IgG 
-
-Look at different antigen's time course
-
-Parse the subject data from the cmi-pb database. This is in JSON format.
-
-> Q. How many infancy_vac are aP and wP ?
-
-Add specimen count to subject table ()
-
-> Q. How many subjects have a specimen count on day all days?  
-
-> Q. Is there variability in igG Ab levels with time?
-
-> Q. Do we see a difference between ap and wP?
-
-> Q. Something with RNA-Seq levels
-
-> Q. Investigate the relationship between Ab titers and mRNA levels on different days. Is RNA-Seq expresion levels predictive of Ab titers?
-
-
-
-## Translate identifiers:
-
-```{r message=FALSE}
-library(AnnotationDbi)
-library(org.Hs.eg.db)
-
-#columns(org.Hs.eg.db)
-mapIds(org.Hs.eg.db,
-        keys="ENSG00000211896",
-        keytype="ENSEMBL",
-        column="SYMBOL")
-
-mapIds(org.Hs.eg.db,
-        keys="ENSG00000211896",
-        keytype="ENSEMBL",
-        column="GENENAME")
-
-```
 
 # About this document
 
