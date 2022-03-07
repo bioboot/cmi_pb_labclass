@@ -1,5 +1,5 @@
 ---
-title: "Mini-Project"
+title: "Mini-Project turning out great"
 subtitle: 'Investigating Pertussis Resurgence'
 output: 
     labsheet::labsheet_default:
