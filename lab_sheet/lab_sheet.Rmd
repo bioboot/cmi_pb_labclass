@@ -12,7 +12,7 @@ output:
         number_sections: false
         code_folding: show
         df_print: paged
----
+--- 
 
 <!-- Standard knitr setup with labsheet package loading -->
 ```{r setup, include = FALSE}
@@ -37,14 +37,18 @@ library(tidyverse)
 
 # Background  
 
-Pertussis (more commonly known as **whooping cough**) is a highly contagious respiratory disease caused by the bacterium *Bordetella pertussis*. People of all ages can be infected leading to violent coughing fits followed by a high-pitched intake of breath that sounds like "whoop". Infants and toddlers have the highest risk for severe complications and death. Recent estimates from the WHO suggest that approximately 16 million cases and 200,000 infant deaths are due to pertussis annually [1](https://pubmed.ncbi.nlm.nih.gov/20466419/).
+Pertussis (more commonly known as **whooping cough**) is a highly contagious respiratory disease caused by the bacterium *Bordetella pertussis*. People of all ages can be infected leading to violent coughing fits followed by a high-pitched intake of breath that sounds like "whoop". Infants and toddlers have the highest risk for severe complications and death. Recent estimates from the WHO suggest that ~16 million cases and 200,000 infant deaths are due to pertussis annually [1](https://pubmed.ncbi.nlm.nih.gov/20466419/).
 
 > **Optional:** Link to a [video of a child with pertussis](https://www.youtube.com/watch?v=S3oZrMGDMMw) (Note that some viewers may find this upsetting).
+
+![](pretussis_in_lungs.png "Bordetella pertussis produces a number of adhesins and toxins, which are important in pathogenesis. Following inhalation, B. pertussis adheres to ciliated epithelium in the trachea and bronchi and release extracellular toxins."){style="float: left;" width="500"}
+
+*Bordetella pertussis* attacks cells lining the airways. The rope-like structures shown are cilia, that typically sweep away inhaled dirt and foreign objects. In a pertussis infection, the bacteria use adhesive proteins to stick whilst releasing toxins that damage cells, trigger inflammation and increase mucus production leading to uncontrollable violent coughing.
 
 
 # 1. Investigating pertussis cases by year
 
-The United States Centers for Disease Control and Prevention (CDC) has been compiling reported pertussis case numbers since 1922 in their *National Notifiable Diseases Surveillance System* (NNDSS). We can view this data on the CDC website here: https://www.cdc.gov/pertussis/surv-reporting/cases-by-year.html
+The United States *Centers for Disease Control and Prevention* (CDC) has been compiling reported pertussis case numbers since 1922 in their *National Notifiable Diseases Surveillance System* (NNDSS). We can view this data on the CDC website here: https://www.cdc.gov/pertussis/surv-reporting/cases-by-year.html
 
 
 ```{r cdcdata, echo=FALSE}
@@ -121,7 +125,7 @@ print(base)
 
 > **Key point:** Pertussis vaccination is, in general, highly effective at preventing the disease. In the pre-vaccine era (before 1946) pertussis was a much more common disease and a major cause of infant mortality [2](https://www.cdc.gov/vaccines/pubs/surv-manual/chpt10-pertussis.html). As we see clearly from analysis of the CDC tracking data above, introduction of the first pertussis vaccination in the United States in 1946 resulted in a dramatic reduction in the number of yearly cases from > 200,000 in the 1940s to < 2,000 in the 1970s. 
 
-# 2. A tale of two vaccines
+# 2. A tale of two vaccines (wP & aP)
 
 ![](vacine.png "Whole-cell pertussis vaccines are inactivated bacteria with many antigens, including endotoxins, which trigger broad immunity. The acellular vaccines use only a few antigens, including a weakened pertussis toxin, to limit side effects."){style="float: right;" width="300"}
 Two types of pertussis vaccines are currently available: **whole-cell pertussis (wP)** and **acellular pertussis (aP)**. The first vaccines were composed of ‘whole cell’ (wP) inactivated bacteria. The latter aP vaccines use purified antigens of the bacteria (the most important pertussis components for our immune system). These aP vaccines were developed to have less side effects than the older wP vaccines and are now the only form administered in the United States.  
@@ -175,14 +179,16 @@ It is clear from the CDC data that pertussis cases are once again increasing. Fo
  
 > **Key-point:** Despite high levels of acellular pertussis (aP) vaccination, the United States and other countries are now experiencing a significant resurgence in pertussis cases with large outbreaks now once again a major public health concern.
 
+<span style="color: green;">
 **Additional points for discussion:** How are vaccines currently approved?
+</span>
 
-- Typically we examine *‘Correlates of protection’* and need to conclude a study in finite time. For the aP vaccine there is an induction of pertussis toxin (PT) antibody titers in infants at equivalent levels to those induced by the wP vaccine. The aP vaccines also had less side effects (reduction of sore arms, fever and pain). 
-- It is impossible to discover a effect 10 years post vaccination in the current trial system
-- It is unclear what differentiates people that have been primed with aP vs. wP long term
-- CMI-PB project is an attempt to make data on this question open an examinable by all.
-
-
+<span style="color: green;"><ul> 
+<li> Typically we examine *‘Correlates of protection’* and need to conclude a study in finite time. For the aP vaccine there is an induction of pertussis toxin (PT) antibody titers in infants at equivalent levels to those induced by the wP vaccine. The aP vaccines also had less side effects (reduction of sore arms, fever and pain).</li> 
+<li> It is impossible to discover a effect 10 years post vaccination in the current trial system.</li>
+<li> It is unclear what differentiates people that have been primed with aP vs. wP long term.</li>
+<li> CMI-PB project is an attempt to make data on this question open and examinable by all.</li>
+</ul></span>
 
 # 3. Exploring CMI-PB data
 
@@ -194,7 +200,7 @@ The new and ongoing [**CMI-PB project**](https://www.cmi-pb.org/) aims to provid
 
 
 
-## The CMI-PB API returns JSON foramt data
+## The CMI-PB API returns JSON data
 
 The CMI-PB API (like most APIs) sends responses in JSON format. Briefly, JSON data is formatted as a series of **key-value pairs**, where a particular word ("key") is associated with a particular value. An example of the JSON format for Ab titer data is shown below:
 
@@ -381,7 +387,7 @@ titer <- read_json("https://www.cmi-pb.org/api/ab_titer", simplifyVector = TRUE)
 ```
 
 ```{r eval=FALSE}
-# Complete the API UTLs...
+# Complete the API URLs...
 specimen <- read_json("___/specimen", simplifyVector = TRUE) 
 titer <- read_json("https://www.cmi-pb.org/api/___", simplifyVector = TRUE) 
 ```
@@ -502,7 +508,7 @@ ggplot(ig1) +
 ```
 
 `r question_start()`
-- **Q15.** Filter to pull out only two specific antigens for analysis and create a boxplot for each. You can chose any you like. Below I picked a "control" antigen (**"Measles"**, that is not in our vaccines) and a clear antigen of interest (**"FIM2/3"**, extracellular fimbriae proteins from *B. pertussis* that participate in substrate attachment). 
+- **Q15.** Filter to pull out only two specific antigens for analysis and create a boxplot for each. You can chose any you like. Below I picked a "control" antigen (**"Measles"**, that is not in our vaccines) and a clear antigen of interest (**"FIM2/3"**, extra-cellular fimbriae proteins from *B. pertussis* that participate in substrate attachment). 
 
 
 ```{r eval=FALSE}
@@ -562,9 +568,9 @@ FIM2/3 levels clearly rise over time and far exceed those of Measles. They also 
 `r question_end()`
 
 
-# 5. Working with CMI-PB RNASeq data
+# 5. Obtaining CMI-PB RNASeq data
 
-For RNA-Seq data the API query mechanism quickly hits the web browser interface limit for file size. We will present alternative download mechanisms for larger CMI-PB datasets in a later section. However, we can still do "targeted" RNA-Seq querys via the web accessible API. 
+For RNA-Seq data the API query mechanism quickly hits the web browser interface limit for file size. We will present alternative download mechanisms for larger CMI-PB datasets in the next section. However, we can still do "targeted" RNA-Seq querys via the web accessible API. 
 
 For example we can obtain RNA-Seq results for a specific ENSEMBLE gene identifier or multiple identifiers combined with the & character:
 
@@ -590,7 +596,7 @@ To facilitate further analysis we need to "join" the `rna` expression data with 
 ssrna <- inner_join(rna, meta)
 ```
 
-
+`r question_start()`
 - **Q18.** Make a plot of the time course of gene expression for IGHG1 gene (i.e. a plot of `visit` vs. `tpm`).
 
 ```{r}
@@ -605,10 +611,14 @@ ggplot(ssrna) +
 
 - **Q20.** Does this pattern in time match the trend of antibody titer data? If not, why not? 
 
-(answer: cells make antibodies, which are long lived)
+`r hide("Hint")`
+Cells make antibodies, which are long lived
 
+`r unhide()`
 
-Going further with `infancy_vac` status:
+`r question_end()`
+
+We can dig deeper and color and/or facet by `infancy_vac` status:
 
 ```{r}
 
@@ -618,24 +628,21 @@ ggplot(ssrna) +
   facet_wrap(vars(visit))
 ```
 
-Let's focus in on visit 4
+There is no obvious wP vs. aP differences here even if we focus in on a particular visit:
 
 ```{r}
 
 ssrna %>%  
-  filter(visit==4) %>% #%>% select(visit) #%>% head()
+  filter(visit==4) %>% 
   ggplot() +
     aes(tpm, col=infancy_vac) + geom_density() + 
     geom_rug() 
 ```
  
-> OPTIONAL Q. Facet by biological sex `+ facet_wrap(vars(biological_sex))` any obvious difference?
 
 
 
-
-
-# 6. [OPTIONAL] Obtaining larger RNA-Seq datasets
+# 6. Working with larger datasets [OPTIONAL] 
 
 As API based RNA-Seq querys can quickly become large requests, CMI-PB makes CSV files available for download. We will take their "2020 longitudinal RNA-Seq data" file (named `2020LD_rnaseq.csv`) from here:
 https://www.cmi-pb.org/downloads/cmipb_challenge_datasets/2021_cmipb_challenge/
@@ -700,16 +707,18 @@ head(rna_wide[,1:7], 3)
 
 As usual we have lots of zero count genes that can be removed (i.e. filtered out) before further analysis. Generally we will want to remove genes which are expressed at low levels or show only small changes in expression. 
 
-Once you have done this we can begin to investigate the relationship between mRNA levels on different days and ultimately address the next pressing questions: 
+# Key remaining questions
+
+Once you have got this far we can begin to investigate the relationship between mRNA levels on different days (e.g. visit 1 vs. visit 4 etc.) and start to address the next set of pressing questions: 
 
 > **Key-questions:** 
 >
 > - Is RNA-Seq expression levels predictive of Ab titers?
 > - What differentiates aP vs. wP primed individuals? 
-> - What about decades after their first immunization? Do you know? Contact Bjoern for your trip to Sweden
+> - What about decades after their first immunization? Do you know? Contact Bjoern and Barry for your trip to Sweden :-)
 
  
-There are immune responses not captured in antibody titers. We are trying to capture the ‘systems level’ response to antigen encounters (here: vaccination). Something must be different in aP vs. wP primed individuals. That is why CMI-PB make all their data available. 
+These are all ares of active research. What is clear is that there are immune responses not captured in antibody titers. We are trying to capture the ‘systems level’ response to antigen encounters (here: vaccination). Something must be different in aP vs. wP primed individuals. That is why CMI-PB make all their data available for the wider community to explore and contribute new analysis methods. We invite you to join us in addressing these important open questions!
 
 
 # About this document
