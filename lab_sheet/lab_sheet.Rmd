@@ -128,7 +128,7 @@ print(base)
 # 2. A tale of two vaccines (wP & aP)
 
 ![](vacine.png "Whole-cell pertussis vaccines are inactivated bacteria with many antigens, including endotoxins, which trigger broad immunity. The acellular vaccines use only a few antigens, including a weakened pertussis toxin, to limit side effects."){style="float: right;" width="300"}
-Two types of pertussis vaccines are currently available: **whole-cell pertussis (wP)** and **acellular pertussis (aP)**. The first vaccines were composed of ‘whole cell’ (wP) inactivated bacteria. The latter aP vaccines use purified antigens of the bacteria (the most important pertussis components for our immune system). These aP vaccines were developed to have less side effects than the older wP vaccines and are now the only form administered in the United States.  
+Two types of pertussis vaccines have been developed: **whole-cell pertussis (wP)** and **acellular pertussis (aP)**. The first vaccines were composed of ‘whole cell’ (wP) inactivated bacteria. The latter aP vaccines use purified antigens of the bacteria (the most important pertussis components for our immune system). These aP vaccines were developed to have less side effects than the older wP vaccines and are now the only form administered in the United States.  
 
 
 > *Side-note*: Currently in United States aP vaccines are administered to infants in combination with those for **d**iphtheria (D) and **t**etanus (T) in the so-called **DTaP vaccine** combination.  A distinct **Tdap** formulation, with reduced doses of diphtheria and pertussis, is administered as a boost for preteens, teens, and adults.
@@ -184,10 +184,11 @@ It is clear from the CDC data that pertussis cases are once again increasing. Fo
 </span>
 
 <span style="color: green;"><ul> 
-<li> Typically we examine *‘Correlates of protection’* and need to conclude a study in finite time. For the aP vaccine there is an induction of pertussis toxin (PT) antibody titers in infants at equivalent levels to those induced by the wP vaccine. The aP vaccines also had less side effects (reduction of sore arms, fever and pain).</li> 
+<li> Typically we first examine *‘Correlates of protection’* which are things that can be measured within weeks or months after vaccination, and which are thought to correlate with increased protection from disease. For the aP vaccine this was  an induction of antibodies against pertussis toxin (PT) in infants at equivalent levels to those induced by the wP vaccine. The aP vaccines also had less side effects (reduction of sore arms, fever and pain).</li>  
+<li> Testing for protection induced by a new vaccine requires a lot of people exposed to the pathogen (like in a pandemic).</li>  
 <li> It is impossible to discover a effect 10 years post vaccination in the current trial system.</li>
 <li> It is unclear what differentiates people that have been primed with aP vs. wP long term.</li>
-<li> CMI-PB project is an attempt to make data on this question open and examinable by all.</li>
+<li> The **CMI-PB project** is an attempt to make data on this question open and examinable by all.</li>
 </ul></span>
 
 # 3. Exploring CMI-PB data
@@ -243,9 +244,11 @@ head(subject, 3)
 
 
 `r question_start()`
-- **Q4.** How may aP and wP infancy vaccinated subjects are in the dataset?
+- **Q4.** How many aP and wP infancy vaccinated subjects are in the dataset?
 
 `r hide("Solution")`
+For these types of questions we can use our old friend the **table()** function, which will *tabulate* the number of unique entries for us:  
+
 ```{r}
 table(subject$infancy_vac)
 ```
@@ -302,7 +305,8 @@ Note that here we are using the `ymd()` function to tell lubridate the format of
 `r question_start()`
 - **Q7.** Using this approach determine (i) the average age of wP individuals, (ii) the average age of aP individuals; and (iii) are they significantly different? 
 
-`r hide("Hint")`
+`r hide("Hint")`  
+Using `ymd()` function on the appropriate column of our `subject` data frame together with today's date we can calculate the age in days for subjects. We can optionally store this back into our `subject` data frame for later use:    
 ```{r echo=FALSE}
 # Use todays date to calculate age in days
 subject$age <- today() - ymd(subject$year_of_birth)
@@ -313,7 +317,7 @@ subject$age <- today() - ymd(subject$year_of_birth)
 subject$age <- today() - ___
 ```
 
-
+Next we can use **dplyr**'s `filter()` function to limit ourselves to a particular subset of subjects to examine the 6 number summary of their age in years: 
 ```{r}
 library(dplyr)
 
@@ -353,7 +357,7 @@ head(age_at_boost)
 
 
 
-- **Q9.** With the help of a faceted boxplot (see below), do you think these two groups are significantly different? 
+- **Q9.** With the help of a faceted boxplot or histogram (see below), do you think these two groups are significantly different? 
 
 ```{r message=FALSE}
 ggplot(subject) +
@@ -484,6 +488,10 @@ ggplot(ig1) +
 
 - **Q14.** What antigens show differences in the level of IgG1 antibody titers recognizing them over time? Why these and not others? 
 
+`r hide("Hint")`
+You can use the CMI-PB website search functionality and *Terminology Browser* (under development) to find out about each antigen. Note that this is still work in progress. 
+`r unhide()`
+
 `r question_end()`
 
 We can attempt to examine differences between wP and aP here by setting color and/or facet values of the plot to include `infancy_vac` status (see below). However these plots tend to be rather busy and thus hard to interpret easily. 
@@ -506,6 +514,9 @@ ggplot(ig1) +
   facet_wrap(vars(infancy_vac, visit), nrow=2)
 
 ```
+
+> Side-note: If you don't like the overlapping x axis labels (and who would?) you can add a `theme()` layer where you set the text angle and horisontal adjustment relative to the axis. For example: `theme(axis.text.x = element_text(angle = 45, hjust=1))`
+
 
 `r question_start()`
 - **Q15.** Filter to pull out only two specific antigens for analysis and create a boxplot for each. You can chose any you like. Below I picked a "control" antigen (**"Measles"**, that is not in our vaccines) and a clear antigen of interest (**"FIM2/3"**, extra-cellular fimbriae proteins from *B. pertussis* that participate in substrate attachment). 
@@ -533,6 +544,7 @@ filter(ig1, antigen=="Measles") %>%
         axis.ticks.y=element_blank()) 
 
 ```
+  
 and the same for `antigen=="FIM2/3"` 
 
 ```{r eval=FALSE}
@@ -558,7 +570,7 @@ filter(ig1, antigen=="FIM2/3") %>%
 ```
   
 
-- **Q16.** What do you notice about these two antigens time course and the FIM2/3 data in particular?
+- **Q16.** What do you notice about these two antigens time courses and the FIM2/3 data in particular?
 
 `r hide("Hint")`
 FIM2/3 levels clearly rise over time and far exceed those of Measles. They also appear to peak at visit 5 and then decline. This trend appears similar for for wP and aP subjects.
@@ -599,7 +611,14 @@ ssrna <- inner_join(rna, meta)
 `r question_start()`
 - **Q18.** Make a plot of the time course of gene expression for IGHG1 gene (i.e. a plot of `visit` vs. `tpm`).
 
-```{r}
+```{r eval=FALSE}
+ggplot(ssrna) +
+  aes(___, ___, group=subject_id) +
+  geom_point() +
+  geom_line(alpha=0.2)
+```
+
+```{r echo=FALSE}
 ggplot(ssrna) +
   aes(visit, tpm, group=subject_id) +
   geom_point() +
@@ -612,7 +631,7 @@ ggplot(ssrna) +
 - **Q20.** Does this pattern in time match the trend of antibody titer data? If not, why not? 
 
 `r hide("Hint")`
-Cells make antibodies, which are long lived
+Have a look back at your plots for Q15 (antigen levels) and compare to your expression levels. Cells make antibodies, which are long lived.
 
 `r unhide()`
 
@@ -628,7 +647,7 @@ ggplot(ssrna) +
   facet_wrap(vars(visit))
 ```
 
-There is no obvious wP vs. aP differences here even if we focus in on a particular visit:
+There is however no obvious wP vs. aP differences here even if we focus in on a particular visit:
 
 ```{r}
 
