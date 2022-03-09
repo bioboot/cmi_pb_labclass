@@ -83,7 +83,7 @@ ggplot(cdc) +
 # 2. A tale of two vaccines (wP & aP)
 
 ![](vacine.png "Whole-cell pertussis vaccines are inactivated bacteria with many antigens, including endotoxins, which trigger broad immunity. The acellular vaccines use only a few antigens, including a weakened pertussis toxin, to limit side effects."){style="float: right;" width="300"}
-Two types of pertussis vaccines are currently available: **whole-cell pertussis (wP)** and **acellular pertussis (aP)**. The first vaccines were composed of ‘whole cell’ (wP) inactivated bacteria. The latter aP vaccines use purified antigens of the bacteria (the most important pertussis components for our immune system). These aP vaccines were developed to have less side effects than the older wP vaccines and are now the only form administered in the United States.  
+Two types of pertussis vaccines have been developed: **whole-cell pertussis (wP)** and **acellular pertussis (aP)**. The first vaccines were composed of ‘whole cell’ (wP) inactivated bacteria. The latter aP vaccines use purified antigens of the bacteria (the most important pertussis components for our immune system). These aP vaccines were developed to have less side effects than the older wP vaccines and are now the only form administered in the United States.  
 
 
 > *Side-note*: Currently in United States aP vaccines are administered to infants in combination with those for **d**iphtheria (D) and **t**etanus (T) in the so-called **DTaP vaccine** combination.  A distinct **Tdap** formulation, with reduced doses of diphtheria and pertussis, is administered as a boost for preteens, teens, and adults.
@@ -138,7 +138,8 @@ It is clear from the CDC data that pertussis cases are once again increasing. Fo
 </span>
 
 <span style="color: green;"><ul> 
-<li> Typically we examine *‘Correlates of protection’* and need to conclude a study in finite time. For the aP vaccine there is an induction of pertussis toxin (PT) antibody titers in infants at equivalent levels to those induced by the wP vaccine. The aP vaccines also had less side effects (reduction of sore arms, fever and pain).</li> 
+<li> Typically we first examine *‘Correlates of protection’* which are things that can be measured within weeks or months after vaccination, and which are thought to correlate with increased protection from disease. For the aP vaccine this was  an induction of antibodies against pertussis toxin (PT) in infants at equivalent levels to those induced by the wP vaccine. The aP vaccines also had less side effects (reduction of sore arms, fever and pain).</li> 
+<li> Testing for protection induced by a new vaccine requires a lot of people exposed to the pathogen (like in a pandemic).</li>
 <li> It is impossible to discover a effect 10 years post vaccination in the current trial system.</li>
 <li> It is unclear what differentiates people that have been primed with aP vs. wP long term.</li>
 <li> CMI-PB project is an attempt to make data on this question open and examinable by all.</li>
@@ -207,7 +208,7 @@ head(subject, 3)
 
 <div class='q_box'>
 
-- **Q4.** How may aP and wP infancy vaccinated subjects are in the dataset?
+- **Q4.** How many aP and wP infancy vaccinated subjects are in the dataset?
 
 
 <div class='solution'><button>Solution</button>
@@ -608,7 +609,7 @@ filter(ig1, antigen==___) %>%
 ![](lab_sheet_files/figure-html/unnamed-chunk-36-1.png)<!-- -->
   
 
-- **Q16.** What do you notice about these two antigens time course and the FIM2/3 data in particular?
+- **Q16.** What do you notice about these two antigens time courses and the FIM2/3 data in particular?
 
 
 <div class='solution'><button>Hint</button>
