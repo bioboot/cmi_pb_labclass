@@ -24,7 +24,7 @@ output:
 
 <!-- Author, course URL and time-stamp details -->
 Barry Grant &lt; <http://thegrantlab.org/bggn213/> &gt;  
-2022-03-07  (17:58:30 on Mon, Mar 07)  
+2022-03-09  (09:50:12 on Wed, Mar 09)  
 
 
 
@@ -83,7 +83,7 @@ ggplot(cdc) +
 # 2. A tale of two vaccines (wP & aP)
 
 ![](vacine.png "Whole-cell pertussis vaccines are inactivated bacteria with many antigens, including endotoxins, which trigger broad immunity. The acellular vaccines use only a few antigens, including a weakened pertussis toxin, to limit side effects."){style="float: right;" width="300"}
-Two types of pertussis vaccines are currently available: **whole-cell pertussis (wP)** and **acellular pertussis (aP)**. The first vaccines were composed of ‘whole cell’ (wP) inactivated bacteria. The latter aP vaccines use purified antigens of the bacteria (the most important pertussis components for our immune system). These aP vaccines were developed to have less side effects than the older wP vaccines and are now the only form administered in the United States.  
+Two types of pertussis vaccines have been developed: **whole-cell pertussis (wP)** and **acellular pertussis (aP)**. The first vaccines were composed of ‘whole cell’ (wP) inactivated bacteria. The latter aP vaccines use purified antigens of the bacteria (the most important pertussis components for our immune system). These aP vaccines were developed to have less side effects than the older wP vaccines and are now the only form administered in the United States.  
 
 
 > *Side-note*: Currently in United States aP vaccines are administered to infants in combination with those for **d**iphtheria (D) and **t**etanus (T) in the so-called **DTaP vaccine** combination.  A distinct **Tdap** formulation, with reduced doses of diphtheria and pertussis, is administered as a boost for preteens, teens, and adults.
@@ -138,10 +138,11 @@ It is clear from the CDC data that pertussis cases are once again increasing. Fo
 </span>
 
 <span style="color: green;"><ul> 
-<li> Typically we examine *‘Correlates of protection’* and need to conclude a study in finite time. For the aP vaccine there is an induction of pertussis toxin (PT) antibody titers in infants at equivalent levels to those induced by the wP vaccine. The aP vaccines also had less side effects (reduction of sore arms, fever and pain).</li> 
+<li> Typically we first examine *‘Correlates of protection’* which are things that can be measured within weeks or months after vaccination, and which are thought to correlate with increased protection from disease. For the aP vaccine this was  an induction of antibodies against pertussis toxin (PT) in infants at equivalent levels to those induced by the wP vaccine. The aP vaccines also had less side effects (reduction of sore arms, fever and pain).</li>  
+<li> Testing for protection induced by a new vaccine requires a lot of people exposed to the pathogen (like in a pandemic).</li>  
 <li> It is impossible to discover a effect 10 years post vaccination in the current trial system.</li>
 <li> It is unclear what differentiates people that have been primed with aP vs. wP long term.</li>
-<li> CMI-PB project is an attempt to make data on this question open and examinable by all.</li>
+<li> The **CMI-PB project** is an attempt to make data on this question open and examinable by all.</li>
 </ul></span>
 
 # 3. Exploring CMI-PB data
@@ -207,10 +208,12 @@ head(subject, 3)
 
 <div class='q_box'>
 
-- **Q4.** How may aP and wP infancy vaccinated subjects are in the dataset?
+- **Q4.** How many aP and wP infancy vaccinated subjects are in the dataset?
 
 
 <div class='solution'><button>Solution</button>
+
+For these types of questions we can use our old friend the **table()** function, which will *tabulate* the number of unique entries for us:  
 
 
 ```r
@@ -270,7 +273,7 @@ today()
 ```
 
 ```
-## [1] "2022-03-07"
+## [1] "2022-03-09"
 ```
 
 How many days have passed since new year 2000 
@@ -281,7 +284,7 @@ today() - ymd("2000-01-01")
 ```
 
 ```
-## Time difference of 8101 days
+## Time difference of 8103 days
 ```
 
 What is this in years?
@@ -292,7 +295,7 @@ time_length( today() - ymd("2000-01-01"),  "years")
 ```
 
 ```
-## [1] 22.17933
+## [1] 22.1848
 ```
 
 Note that here we are using the `ymd()` function to tell lubridate the format of our particular date and then the `time_length()` function to convert days to years.
@@ -304,7 +307,8 @@ Note that here we are using the `ymd()` function to tell lubridate the format of
 
 
 <div class='solution'><button>Hint</button>
-
+  
+Using `ymd()` function on the appropriate column of our `subject` data frame together with today's date we can calculate the age in days for subjects. We can optionally store this back into our `subject` data frame for later use:    
 
 
 
@@ -313,7 +317,7 @@ Note that here we are using the `ymd()` function to tell lubridate the format of
 subject$age <- today() - ___
 ```
 
-
+Next we can use **dplyr**'s `filter()` function to limit ourselves to a particular subset of subjects to examine the 6 number summary of their age in years: 
 
 ```r
 library(dplyr)
@@ -325,7 +329,7 @@ round( summary( time_length( ap$age, "years" ) ) )
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##      22      24      25      24      25      26
+##      22      24      25      25      25      26
 ```
 
 
@@ -370,7 +374,7 @@ head(age_at_boost)
 
 
 
-- **Q9.** With the help of a faceted boxplot (see below), do you think these two groups are significantly different? 
+- **Q9.** With the help of a faceted boxplot or histogram (see below), do you think these two groups are significantly different? 
 
 
 ```r
@@ -523,7 +527,7 @@ head(ig1)
 
 <div data-pagedtable="false">
   <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["specimen_id"],"name":[1],"type":["int"],"align":["right"]},{"label":["isotype"],"name":[2],"type":["chr"],"align":["left"]},{"label":["is_antigen_specific"],"name":[3],"type":["lgl"],"align":["right"]},{"label":["antigen"],"name":[4],"type":["chr"],"align":["left"]},{"label":["ab_titer"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["unit"],"name":[6],"type":["chr"],"align":["left"]},{"label":["lower_limit_of_detection"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["subject_id"],"name":[8],"type":["int"],"align":["right"]},{"label":["actual_day_relative_to_boost"],"name":[9],"type":["int"],"align":["right"]},{"label":["planned_day_relative_to_boost"],"name":[10],"type":["int"],"align":["right"]},{"label":["specimen_type"],"name":[11],"type":["chr"],"align":["left"]},{"label":["visit"],"name":[12],"type":["int"],"align":["right"]},{"label":["infancy_vac"],"name":[13],"type":["chr"],"align":["left"]},{"label":["biological_sex"],"name":[14],"type":["chr"],"align":["left"]},{"label":["ethnicity"],"name":[15],"type":["chr"],"align":["left"]},{"label":["race"],"name":[16],"type":["chr"],"align":["left"]},{"label":["year_of_birth"],"name":[17],"type":["chr"],"align":["left"]},{"label":["date_of_boost"],"name":[18],"type":["chr"],"align":["left"]},{"label":["study_name"],"name":[19],"type":["chr"],"align":["left"]},{"label":["age"],"name":[20],"type":["drtn"],"align":["right"]}],"data":[{"1":"1","2":"IgG1","3":"TRUE","4":"ACT","5":"274.355068","6":"IU/ML","7":"3.848750","8":"1","9":"-3","10":"0","11":"Blood","12":"1","13":"wP","14":"Female","15":"Not Hispanic or Latino","16":"White","17":"1986-01-01","18":"2016-09-12","19":"2020_dataset","20":"13214 days","_rn_":"1"},{"1":"1","2":"IgG1","3":"TRUE","4":"LOS","5":"10.974026","6":"IU/ML","7":"4.357917","8":"1","9":"-3","10":"0","11":"Blood","12":"1","13":"wP","14":"Female","15":"Not Hispanic or Latino","16":"White","17":"1986-01-01","18":"2016-09-12","19":"2020_dataset","20":"13214 days","_rn_":"2"},{"1":"1","2":"IgG1","3":"TRUE","4":"FELD1","5":"1.448796","6":"IU/ML","7":"2.699944","8":"1","9":"-3","10":"0","11":"Blood","12":"1","13":"wP","14":"Female","15":"Not Hispanic or Latino","16":"White","17":"1986-01-01","18":"2016-09-12","19":"2020_dataset","20":"13214 days","_rn_":"3"},{"1":"1","2":"IgG1","3":"TRUE","4":"BETV1","5":"0.100000","6":"IU/ML","7":"1.734784","8":"1","9":"-3","10":"0","11":"Blood","12":"1","13":"wP","14":"Female","15":"Not Hispanic or Latino","16":"White","17":"1986-01-01","18":"2016-09-12","19":"2020_dataset","20":"13214 days","_rn_":"4"},{"1":"1","2":"IgG1","3":"TRUE","4":"LOLP1","5":"0.100000","6":"IU/ML","7":"2.550606","8":"1","9":"-3","10":"0","11":"Blood","12":"1","13":"wP","14":"Female","15":"Not Hispanic or Latino","16":"White","17":"1986-01-01","18":"2016-09-12","19":"2020_dataset","20":"13214 days","_rn_":"5"},{"1":"1","2":"IgG1","3":"TRUE","4":"Measles","5":"36.277417","6":"IU/ML","7":"4.438966","8":"1","9":"-3","10":"0","11":"Blood","12":"1","13":"wP","14":"Female","15":"Not Hispanic or Latino","16":"White","17":"1986-01-01","18":"2016-09-12","19":"2020_dataset","20":"13214 days","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["specimen_id"],"name":[1],"type":["int"],"align":["right"]},{"label":["isotype"],"name":[2],"type":["chr"],"align":["left"]},{"label":["is_antigen_specific"],"name":[3],"type":["lgl"],"align":["right"]},{"label":["antigen"],"name":[4],"type":["chr"],"align":["left"]},{"label":["ab_titer"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["unit"],"name":[6],"type":["chr"],"align":["left"]},{"label":["lower_limit_of_detection"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["subject_id"],"name":[8],"type":["int"],"align":["right"]},{"label":["actual_day_relative_to_boost"],"name":[9],"type":["int"],"align":["right"]},{"label":["planned_day_relative_to_boost"],"name":[10],"type":["int"],"align":["right"]},{"label":["specimen_type"],"name":[11],"type":["chr"],"align":["left"]},{"label":["visit"],"name":[12],"type":["int"],"align":["right"]},{"label":["infancy_vac"],"name":[13],"type":["chr"],"align":["left"]},{"label":["biological_sex"],"name":[14],"type":["chr"],"align":["left"]},{"label":["ethnicity"],"name":[15],"type":["chr"],"align":["left"]},{"label":["race"],"name":[16],"type":["chr"],"align":["left"]},{"label":["year_of_birth"],"name":[17],"type":["chr"],"align":["left"]},{"label":["date_of_boost"],"name":[18],"type":["chr"],"align":["left"]},{"label":["study_name"],"name":[19],"type":["chr"],"align":["left"]},{"label":["age"],"name":[20],"type":["drtn"],"align":["right"]}],"data":[{"1":"1","2":"IgG1","3":"TRUE","4":"ACT","5":"274.355068","6":"IU/ML","7":"3.848750","8":"1","9":"-3","10":"0","11":"Blood","12":"1","13":"wP","14":"Female","15":"Not Hispanic or Latino","16":"White","17":"1986-01-01","18":"2016-09-12","19":"2020_dataset","20":"13216 days","_rn_":"1"},{"1":"1","2":"IgG1","3":"TRUE","4":"LOS","5":"10.974026","6":"IU/ML","7":"4.357917","8":"1","9":"-3","10":"0","11":"Blood","12":"1","13":"wP","14":"Female","15":"Not Hispanic or Latino","16":"White","17":"1986-01-01","18":"2016-09-12","19":"2020_dataset","20":"13216 days","_rn_":"2"},{"1":"1","2":"IgG1","3":"TRUE","4":"FELD1","5":"1.448796","6":"IU/ML","7":"2.699944","8":"1","9":"-3","10":"0","11":"Blood","12":"1","13":"wP","14":"Female","15":"Not Hispanic or Latino","16":"White","17":"1986-01-01","18":"2016-09-12","19":"2020_dataset","20":"13216 days","_rn_":"3"},{"1":"1","2":"IgG1","3":"TRUE","4":"BETV1","5":"0.100000","6":"IU/ML","7":"1.734784","8":"1","9":"-3","10":"0","11":"Blood","12":"1","13":"wP","14":"Female","15":"Not Hispanic or Latino","16":"White","17":"1986-01-01","18":"2016-09-12","19":"2020_dataset","20":"13216 days","_rn_":"4"},{"1":"1","2":"IgG1","3":"TRUE","4":"LOLP1","5":"0.100000","6":"IU/ML","7":"2.550606","8":"1","9":"-3","10":"0","11":"Blood","12":"1","13":"wP","14":"Female","15":"Not Hispanic or Latino","16":"White","17":"1986-01-01","18":"2016-09-12","19":"2020_dataset","20":"13216 days","_rn_":"5"},{"1":"1","2":"IgG1","3":"TRUE","4":"Measles","5":"36.277417","6":"IU/ML","7":"4.438966","8":"1","9":"-3","10":"0","11":"Blood","12":"1","13":"wP","14":"Female","15":"Not Hispanic or Latino","16":"White","17":"1986-01-01","18":"2016-09-12","19":"2020_dataset","20":"13216 days","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 
@@ -545,6 +549,14 @@ ggplot(ig1) +
    
 
 - **Q14.** What antigens show differences in the level of IgG1 antibody titers recognizing them over time? Why these and not others? 
+
+
+<div class='solution'><button>Hint</button>
+
+You can use the CMI-PB website search functionality and *Terminology Browser* (under development) to find out about each antigen. Note that this is still work in progress. 
+
+</div>
+
 
 
 </div>
@@ -575,6 +587,9 @@ ggplot(ig1) +
 
 ![](lab_sheet_files/figure-html/unnamed-chunk-32-1.png)<!-- -->
 
+> Side-note: If you don't like the overlapping x axis labels (and who would?) you can add a `theme()` layer where you set the text angle and horisontal adjustment relative to the axis. For example: `theme(axis.text.x = element_text(angle = 45, hjust=1))`
+
+
 
 <div class='q_box'>
 
@@ -593,6 +608,7 @@ filter(ig1, antigen=="Measles") %>%
 
 
 ![](lab_sheet_files/figure-html/unnamed-chunk-34-1.png)<!-- -->
+  
 and the same for `antigen=="FIM2/3"` 
 
 
@@ -608,7 +624,7 @@ filter(ig1, antigen==___) %>%
 ![](lab_sheet_files/figure-html/unnamed-chunk-36-1.png)<!-- -->
   
 
-- **Q16.** What do you notice about these two antigens time course and the FIM2/3 data in particular?
+- **Q16.** What do you notice about these two antigens time courses and the FIM2/3 data in particular?
 
 
 <div class='solution'><button>Hint</button>
@@ -666,12 +682,12 @@ ssrna <- inner_join(rna, meta)
 
 ```r
 ggplot(ssrna) +
-  aes(visit, tpm, group=subject_id) +
+  aes(___, ___, group=subject_id) +
   geom_point() +
   geom_line(alpha=0.2)
 ```
 
-![](lab_sheet_files/figure-html/unnamed-chunk-39-1.png)<!-- -->
+![](lab_sheet_files/figure-html/unnamed-chunk-40-1.png)<!-- -->
 
 
 - **Q19.**: What do you notice about the expression of this gene (i.e. when is it at it's maximum level)?
@@ -681,7 +697,7 @@ ggplot(ssrna) +
 
 <div class='solution'><button>Hint</button>
 
-Cells make antibodies, which are long lived
+Have a look back at your plots for Q15 (antigen levels) and compare to your expression levels. Cells make antibodies, which are long lived.
 
 
 </div>
@@ -701,9 +717,9 @@ ggplot(ssrna) +
   facet_wrap(vars(visit))
 ```
 
-![](lab_sheet_files/figure-html/unnamed-chunk-40-1.png)<!-- -->
+![](lab_sheet_files/figure-html/unnamed-chunk-41-1.png)<!-- -->
 
-There is no obvious wP vs. aP differences here even if we focus in on a particular visit:
+There is however no obvious wP vs. aP differences here even if we focus in on a particular visit:
 
 
 ```r
@@ -714,7 +730,7 @@ ssrna %>%
     geom_rug() 
 ```
 
-![](lab_sheet_files/figure-html/unnamed-chunk-41-1.png)<!-- -->
+![](lab_sheet_files/figure-html/unnamed-chunk-42-1.png)<!-- -->
  
 
 
