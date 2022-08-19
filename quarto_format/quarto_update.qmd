@@ -1,5 +1,37 @@
 ---
 title: "Investigating Pertussis Resurgence with CMI-PB"
+author:
+  - name: Barry J. Grant
+    orcid: 0000-0002-2215-4196
+    email: bjgrant@ucsd.edu
+    affiliations:
+      - ref: ucsd      
+  - name: Pramod Shinde
+    email: pshinde@lji.org
+    affiliations:
+      - ref: lji
+  - name: Ferran Soldevila
+    email: fsoldevila@lji.org
+    affiliations:
+      - ref: lji
+  - name: Bjoern Peters
+    orcid: 0000-0002-8457-6693
+    email: bpeters@lji.org
+    corresponding: true
+    affiliations:
+      - ref: ucsd      
+      - ref: lji
+affiliations:
+  - id: ucsd
+    department: Division of Biological Sciences
+    name: University of California, San Diego
+    city: La Jolla
+    state: CA
+  - id: lji
+    department: Division of Vaccine Discovery
+    name: La Jolla Institute for Immunology
+    city: La Jolla
+    state: CA
 format: 
   html:
     toc: true
@@ -17,12 +49,6 @@ format:
 library(labsheet)
 library(tidyverse)
 ```
-
-<!-- Track Correct Student Responses -->
-`r score_counter()`
-
-<!-- Author, course URL and time-stamp details -->
-`r author(name="Barry Grant & Bjoern Peters", course="bggn213")`
 
 
 # Background  
