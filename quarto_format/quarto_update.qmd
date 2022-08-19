@@ -42,6 +42,7 @@ format:
       light: flatly
       dark: darkly
   pdf: default
+bibliography: references.bib
 --- 
 
 <!-- Standard knitr setup with labsheet package loading -->
@@ -53,7 +54,7 @@ library(tidyverse)
 
 # Background  
 
-Pertussis (more commonly known as **whooping cough**) is a highly contagious respiratory disease caused by the bacterium *Bordetella pertussis*, @fig-pretussis. People of all ages can be infected leading to violent coughing fits followed by a high-pitched intake of breath that sounds like "whoop". Infants and toddlers have the highest risk for severe complications and death. Recent estimates from the WHO suggest that ~16 million cases and 200,000 infant deaths are due to pertussis annually [1](https://pubmed.ncbi.nlm.nih.gov/20466419/).
+Pertussis (more commonly known as **whooping cough**) is a highly contagious respiratory disease caused by the bacterium *Bordetella pertussis*, @fig-pretussis. People of all ages can be infected leading to violent coughing fits followed by a high-pitched intake of breath that sounds like "whoop". Infants and toddlers have the highest risk for severe complications and death. Recent estimates from the WHO suggest that ~16 million cases and 200,000 infant deaths are due to pertussis annually [@black2010].
 
 ![*Bordetella pertussis* attacks cells lining the airways. The rope-like structures shown are cilia, that typically sweep away inhaled dirt and foreign objects. In a pertussis infection, the bacteria use adhesive proteins to stick whilst releasing toxins that damage cells, trigger inflammation and increase mucus production leading to uncontrollable violent coughing.](images/pretussis_in_lungs.png "Bordetella pertussis produces a number of adhesins and toxins, which are important in pathogenesis. Following inhalation, *B. pertussis* adheres to ciliated epithelium in the trachea and bronchi and release these extracellular toxins. "){#fig-pretussis style="float: left;" width="500"}
 
@@ -152,8 +153,8 @@ Two types of pertussis vaccines have been developed: **whole-cell pertussis (wP)
 
 > *Side-note*: Currently in United States aP vaccines are administered to infants in combination with those for **d**iphtheria (D) and **t**etanus (T) in the so-called **DTaP vaccine** combination.  A distinct **Tdap** formulation, with reduced doses of diphtheria and pertussis, is administered as a boost for preteens, teens, and adults.
 
-For motivated readers there is a nice historical account of the wP to aP vaccine switch in the US and elsewhere here:
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4975064/
+For motivated readers there is a nice historical account of the wP to aP vaccine switch in the US in Klein (2014) [@klein2014]
+
 
 Let's return to our CDC data plot and examine what happened after the switch to the acellular pertussis (aP) vaccination program.
 
@@ -394,13 +395,14 @@ ggplot(subject) +
   aes(time_length(age, "year"),
       fill=as.factor(infancy_vac)) +
   geom_histogram(show.legend=FALSE) +
-  facet_wrap(vars(infancy_vac), nrow=2) 
+  facet_wrap(vars(infancy_vac), nrow=2) +
+  xlab("Age in years")
 ```
 
 ::: {.callout-tip collapse="true"} 
 ## Hint
 
-Sure are, it is not necessary but we could calculate a p-value...
+These groups are clearly different. It is not necessary but we could calculate a p-value...
 ```{r}
 # Or use wilcox.test() 
 x <- t.test(time_length( wp$age, "years" ),
@@ -459,7 +461,7 @@ To answer this question you need to chose the correct `join()` function (from `i
 
 :::
 
-For a nice description of other join types see: https://www.garrickadenbuie.com/project/tidyexplain/ from where the animated images above were taken.
+For a nice description of different join types see: https://www.garrickadenbuie.com/project/tidyexplain/ from where the animated images in the HTML version of this document were taken.
 
 :::
 
